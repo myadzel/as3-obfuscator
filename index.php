@@ -22,8 +22,8 @@ function getReplacementAsCSV($aReplacements) {
 	return join("\n", $aResult);
 }
 
-$sDirectorySource = "./as3-src";
-$sDirectoryDestination = "./as3-dst";
+$sDirectorySource = "./proc/source";
+$sDirectoryDestination = "./proc/destination";
 
 //parse directory
 AS3Scanner::scanDirectory($sDirectorySource);
