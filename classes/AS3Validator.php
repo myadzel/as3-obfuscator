@@ -2,7 +2,26 @@
 
 class AS3Validator {
 	
-	private static $aReservedWords = array("abstract", "as", "boolean", "break", "byte", "case", "cast", "catch", "char", "class", "const", "continue", "debugger", "default", "delete", "do", "double", "dynamic", "each", "else", "enum", "export", "extends", "false", "final", "finally", "float", "for", "function", "get", "goto", "if", "implements", "import", "in", "include", "instanceof", "interface", "internal", "intrinsic", "is", "long", "namespace", "native", "native", "new", "null", "override", "package", "private", "protected", "prototype", "public", "return", "set", "short", "static", "super", "switch", "synchronized", "this", "throw", "throws", "to", "transient", "true", "try", "type", "typeof", "use", "var", "virtual", "void", "volatile", "while", "with");
+	private static $aReservedWords = array(
+		"abstract", "as", 
+		"boolean", "break", "byte", 
+		"case", "cast", "catch", "char", "class", "const", "continue", 
+		"debugger", "default", "delete", "do", "double", "dynamic", 
+		"each", "else", "enum", "export", "extends", 
+		"false", "final", "finally", "float", "for", "function", 
+		"get", "goto", 
+		"if", "implements", "import", "in", "include", "instanceof", "interface", "internal", "intrinsic", "is", 
+		"long", 
+		"namespace", "native", "native", "new", "null", 
+		"override", 
+		"package", "private", "protected", "prototype", "public", 
+		"return", 
+		"set", "short", "static", "super", "switch", "synchronized", 
+		"this", "throw", "throws", "to", "transient", "true", "try", "type", "typeof", 
+		"use", 
+		"var", "virtual", "void", "volatile", 
+		"while", "with"
+	);
 
 	public static function getReservedWords() {
 		return self::$aReservedWords;

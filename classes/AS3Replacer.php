@@ -9,7 +9,8 @@ class AS3Replacer {
 	}
 	
 	public static function getRandomAlphaName($iLength = 10, $sPrefix = "__") {
-		return $sPrefix.substr(str_shuffle(str_repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", 10)), 0, $iLength);
+		var sChars = str_repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", 10);
+		return $sPrefix.substr(str_shuffle(sChars), 0, $iLength);
 	}
 	
 	public static function getMD5Name($sValue, $sPrefix = "__") {
@@ -17,7 +18,7 @@ class AS3Replacer {
 	}
 	
 	public static function replace($sCode) {
-		foreach(self::$aReplacements as $sKey => $sValue) {
+		foreach (self::$aReplacements as $sKey => $sValue) {
 			$sCode = preg_replace("@([^_a-zA-Z0-9])($sKey)([^_a-zA-Z0-9])@sm", "$1$sValue$3", $sCode);
 		}
 

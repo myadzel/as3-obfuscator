@@ -11,6 +11,7 @@ class AS3Cleaner {
 		//new line fix
 		$f = preg_replace("@\r@", "\n", $f);
 
+		//TODO: bugs in simple regexp, use another cutting method
 		//remove /**/ comments
 		$f = preg_replace("@/\*.*?\*/@s", "", $f);
 		$f = preg_replace("@\n\s*\n@", "\n", $f);
