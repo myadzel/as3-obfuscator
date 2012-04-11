@@ -16,7 +16,7 @@
 ###Примечания.###
 1) Если имя класса (и его конструктор) не нужно обфусцировать, например, некий стартовый класс (обычно, Main.as), инициализацированный из *.fla, то прописываем его в массив в качестве второго аргумента (в index.php):
 
-<code>$aIgnoreWords = array_merge(AS3Validator::getReservedWords(), array("Main]"));</code>
+<code>$aIgnoreWords = array_merge(AS3Validator::getReservedWords(), array("Main"));</code>
 
 потом это хозяйство вынесу в отдельный файл.
 
