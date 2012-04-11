@@ -9,7 +9,7 @@ class AS3Replacer {
 	}
 	
 	public static function getRandomAlphaName($iLength = 10, $sPrefix = "__") {
-		var sChars = str_repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", 10);
+		$sChars = str_repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", 10);
 		return $sPrefix.substr(str_shuffle(sChars), 0, $iLength);
 	}
 	
