@@ -73,9 +73,14 @@ class AS3Parser {
 	
 	//private methods
 	private static function callbackClass($aMatches, $sPackageName) {
+		//definition with keywords and more, like "public final class AutoSaveController extends Object"
 		$sClassDefinition = $aMatches[1];
 
 		$sClassBody = $aMatches[2];
+		
+		//class property attributes:
+		//internal (default), dynamic, final, public
+		//http://help.adobe.com/en_US/as3/learn/WS5b3ccc516d4fbf351e63e3d118a9b90204-7f36.html
 
 		$sClassName = preg_replace("@^(.*)(class|interface)\s+([_a-z0-9$]+)(.*)$@smi", "$3", $sClassDefinition);
 
@@ -87,16 +92,31 @@ class AS3Parser {
 	}
 	
 	private static function parseClass($s, $sClassName, $sPackageName = "") {
-		$sResult = $s;
-		
+		$sTmp = $s;
+
 		//scan function's body
-		/*preg_match_all("@(?:{(?:(?>[^{}]+)|(?R))*})@smix", $sResult, $aMatchesBodies);*/
+		preg_match_all("@(?:{(?:(?>[^{}]+)|(?R))*})@smix", $sTmp, $aMatchesBodies);
 
+		//method property attributes:
+		//internal (default), private, protected, public, static, [UserDefinedNamespace]
+		//http://help.adobe.com/en_US/as3/learn/WS5b3ccc516d4fbf351e63e3d118a9b90204-7f36.html
+		
 		//scan function's all
-		preg_match_all("@\s*(private|public|protected|internal)?\s+function\s+([_a-z][\s_a-z0-9]+)(\([^)]*\))(?:\s*\:\s*(\*|[\s_a-z][\s_a-z0-9]+))?@smi", $s, $aMatches); 
+		preg_match_all("@
+			((?:\s+(?:internal|private|protected|public|static))+)? #one or more attributes
+			\s+function\s+
+			(?:(get|set)\s+)? #get/set statement
+			([_a-z0-9$]+) #method name
+			(\([^)]*\)) #method args
+			(?:\s*\:\s*(\*|[_a-z0-9$]+))? #type of returned values
+		@smix", $s, $aMatches); 
 
-		for ($i = 0; $i < sizeof($aMatches[2]); $i++) {
-			self::pushToStack($aMatches[2][$i], $sClassName, $sPackageName);
+		if (sizeof($aMatches[0]) != sizeof($aMatchesBodies[0])) {
+			throw new Exception("Can't parse class methods, miscount bodies and definitions");
+		}
+
+		for ($i = 0; $i < sizeof($aMatches[3]); $i++) {
+			self::pushToStack($aMatches[3][$i], $sClassName, $sPackageName);
 		}
 
 		//TODO:
