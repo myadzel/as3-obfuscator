@@ -2,8 +2,6 @@
 
 set_time_limit(0);
 
-//TODO: parsing bug in JSONDecoder::parseValue()
-
 header("Content-Type: text/plain; charset=utf-8");
 
 function __autoload($sClassName) {

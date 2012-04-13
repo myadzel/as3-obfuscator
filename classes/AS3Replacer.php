@@ -61,7 +61,7 @@ class AS3Replacer {
 							//read and clean (don't remove comments, etc.)
 							$sFileContents = FileReader::read("$sSourceDir/$sFileName");
 							$sFileContents = AS3Cleaner::cleanBOM($sFileContents);
-							
+
 							$sNewFileContents = self::replace($sFileContents);
 
 							//get filename from replacement table

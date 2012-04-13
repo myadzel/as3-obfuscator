@@ -36,7 +36,7 @@ class AS3Parser {
 			self::$aStack[$sPackageName][$sClassName] = array();
 		}
 	}
-	
+
 	private static function callbackPackage($aMatches) {
 		$sPackageName = $aMatches[1];
 		$sPackageName = preg_replace("@^(.*)(package)\s*([_a-z0-9.$]+)(.*)$@smi", "$3", $sPackageName);
@@ -45,11 +45,16 @@ class AS3Parser {
 
 		//set package name
 		self::$sPackageName = $sPackageName;
+		
+		//clear strings tokens temporary (for the safe testing of pairing brackets)
+		$sPackageContentTmp = $sPackageContent;
+		$sPackageContentTmp = preg_replace('@"([^\\\\"]|\\\\.)*"@', '__TOKEN_STRING_DOUBLE_QUOTED__', $sPackageContentTmp);
+		$sPackageContentTmp = preg_replace("@'([^\\\\']|\\\\.)*'@", '__TOKEN_STRING_SINGLE_QUOTED__', $sPackageContentTmp);
 
-		$sPackageContent = preg_replace_callback(
+		preg_replace_callback(
 			"@([_a-z0-9$\s]*)({((?>[^{}]+)|(?R))*})+@smix", 
 			create_function('$aMatch', 'return AS3Parser::callbackClassThru($aMatch, AS3Parser::$sPackageName);'), 
-			$sPackageContent
+			$sPackageContentTmp
 		);
 		
 		//restore (reset) package name
@@ -83,17 +88,15 @@ class AS3Parser {
 	
 	private static function parseClass($s, $sClassName, $sPackageName = "") {
 		$sResult = $s;
-
-		/*
+		
 		//scan function's body
-		preg_match_all("@({((?>[^{}]+)|(?R))*})+@smi", $sResult, $aMatches);  
-		*/
+		/*preg_match_all("@(?:{(?:(?>[^{}]+)|(?R))*})@smix", $sResult, $aMatchesBodies);*/
 
-		//search for functions
-		preg_match_all("@(((?:private|public|protected)\s+)?function[\s_a-z][\s_a-z0-9]+)(\([^)]*\))(\s*\:\s*(\*|[\s_a-z][\s_a-z0-9]+))?@smi", $s, $aMatches); 
+		//scan function's all
+		preg_match_all("@\s*(private|public|protected|internal)?\s+function\s+([_a-z][\s_a-z0-9]+)(\([^)]*\))(?:\s*\:\s*(\*|[\s_a-z][\s_a-z0-9]+))?@smi", $s, $aMatches); 
 
-		for ($i = 0; $i < sizeof($aMatches[1]); $i++) {
-			self::pushToStack($aMatches[1][$i], $sClassName, $sPackageName);
+		for ($i = 0; $i < sizeof($aMatches[2]); $i++) {
+			self::pushToStack($aMatches[2][$i], $sClassName, $sPackageName);
 		}
 
 		//TODO:
