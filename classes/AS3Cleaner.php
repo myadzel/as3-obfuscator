@@ -2,41 +2,43 @@
 
 class AS3Cleaner {
 
-	public static function clean($f) {
-		$f = self::cleanBOM($f);
-		
+	public static function clean($s) {
 		//remove BOM
-		$f = preg_replace("@^\xEF\xBB\xBF@", "", $f);
+		$s = self::cleanBOM($s);
 	
 		//new line fix
-		$f = preg_replace("@\r@", "\n", $f);
+		$s = preg_replace("@\r@", "\n", $s);
 
 		//TODO: bugs in simple regexp, use another cutting method
 		//remove /**/ comments
-		$f = preg_replace("@/\*.*?\*/@s", "", $f);
-		$f = preg_replace("@\n\s*\n@", "\n", $f);
+		$s = preg_replace("@/\*.*?\*/@s", "", $s);
+		$s = preg_replace("@\n\s*\n@", "\n", $s);
 		
 		//remove // comments
-		$f = preg_replace("@//[^\r\n]+@", "", $f);
+		$s = preg_replace("@//[^\r\n]+@", "", $s);
 
 		//remove tab
-		$f = preg_replace("@\t@", "    ", $f);
+		$s = preg_replace("@\t@", "    ", $s);
 
 		//remove double lines
-		$f = preg_replace("@\n+@", "\n", $f);
+		$s = preg_replace("@\n+@", "\n", $s);
 
 		//remove double space
-		$f = preg_replace("@[ ]+@", " ", $f);
+		$s = preg_replace("@[ ]+@", " ", $s);
 		
 		//remove space on new after line
-		$f = preg_replace("@\n +@", "\n", $f);
+		$s = preg_replace("@\n +@", "\n", $s);
 		
-		return trim($f);
+		return trim($s);
 	}
 	
-	public static function cleanBOM($f) {
+	public static function cleanBOM($s) {
 		//remove UTF-8 byte order mark
-		return preg_replace("@^\xEF\xBB\xBF@", "", $f);
+		if (substr($s, 0, 3) == pack("CCC", 0xEF, 0xBB, 0xBF)) {
+			$s = substr($s, 3);
+		}
+		
+		return $s;
 	}
 
 }
