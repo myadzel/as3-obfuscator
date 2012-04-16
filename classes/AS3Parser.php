@@ -98,7 +98,7 @@ class AS3Parser {
 		preg_match_all("@(?:{(?:(?>[^{}]+)|(?R))*})@smix", $sTmp, $aMatchesBodies);
 		
 		//clean function's body to ignore nested functions
-		$sTmp = preg_replace("@(?:{(?:(?>[^{}]+)|(?R))*})@smix", "{}", $sTmp);
+		$sTmp = preg_replace("@({(?:(?>[^{}]+)|(?R))*})@smix", "{}", $sTmp);
 
 		//method property attributes:
 		//internal (default), private, protected, public, static, [UserDefinedNamespace]
