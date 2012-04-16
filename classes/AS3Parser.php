@@ -91,11 +91,14 @@ class AS3Parser {
 		return $sClassCode;
 	}
 	
-	private static function parseClass($s, $sClassName, $sPackageName = "") {
-		$sTmp = $s;
+	private static function parseClass($sClassBody, $sClassName, $sPackageName = "") {
+		$sTmp = $sClassBody;
 
 		//scan function's body
 		preg_match_all("@(?:{(?:(?>[^{}]+)|(?R))*})@smix", $sTmp, $aMatchesBodies);
+		
+		//clean function's body to ignore nested functions
+		$sTmp = preg_replace("@(?:{(?:(?>[^{}]+)|(?R))*})@smix", "{}", $sTmp);
 
 		//method property attributes:
 		//internal (default), private, protected, public, static, [UserDefinedNamespace]
@@ -106,11 +109,12 @@ class AS3Parser {
 			((?:\s+(?:internal|private|protected|public|static))+)? #one or more attributes
 			\s+function\s+
 			(?:(get|set)\s+)? #get/set statement
-			([_a-z0-9$]+) #method name
-			(\([^)]*\)) #method args
+			([_a-z0-9$]+) #name
+			\s* #space before curly brackets
+			(\([^)]*\)) #args
 			(?:\s*\:\s*(\*|[_a-z0-9$]+))? #type of returned values
-		@smix", $s, $aMatches); 
-
+		@smix", $sTmp, $aMatches);
+		
 		if (sizeof($aMatches[0]) != sizeof($aMatchesBodies[0])) {
 			throw new Exception("Can't parse class methods, miscount bodies and definitions");
 		}
