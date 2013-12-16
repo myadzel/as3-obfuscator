@@ -1,21 +1,19 @@
-# AS3-obfuscator
+#AS3-obfuscator
 
-Это написанный на PHP5 и построенный на регулярных выражениях (функциях preg_*) простой обфускатор для кода классов на ActionScript 3. 
+Simple obfuscator for ActionScript 3 classes written in PHP5 and based on regular expressions.
 
-Он заменяет имена классов и методов во всех файлах *.as на случайные строки для запутывания чтения логики сценариев.
-
-
-## Как это работает
-
-1. Кладем структуру директории классов в proc/source.
-
-2. Запускаем index.php.
-
-3. В случае успешной обфускации получаем информацию в виде массива трехмерной структуры "пакет/класс/метод" и таблицы замен, плюс, готовые файлы в proc/destination.
+It replaces the names of classes and class methods to random strings founded in all AS3 files to confuse the logic of reading scripts.
 
 
-#### Что необходимо учесть 
+##How does this work
 
-1. Если имя класса (и его конструктор) не нужно обфусцировать, например, некий стартовый класс (обычно, Main.as) инициализированный из *.fla, его нужно добавить в файл proc/ignored-words.txt.
+Put the structure of classes in proc/source directory and run index.php.
 
-2. Если где-то в ваших файлах используется вызов методов/конструктора классов путем конкатенации строк, то значение имени метода или класса можно получить только во время компиляции программы или в процессе ее работы. В этом случае, данный обфускатор, использовать нет смысла. Если очень хочется, придется переписать свой код.
+In case of successful obfuscation you will obtain information in an array of three-dimensional structure "package/class/method" and the replacement table, plus the finished files to proc/destination.
+
+
+##Things to Consider
+
+To prevent obfuscate of the class name (and constructor), for example, a based start-class (usually, Main.as) initialized from the *.fla you must add it to the file proc/ignored-words.txt.
+
+If somewhere in your files you call constructor through concatenating strings you will obtain the value of class name/method only at compilation process or in the execution of program. In this case this obfuscator it makes no sense to use. If you really want it, you need to rewrite your code.
